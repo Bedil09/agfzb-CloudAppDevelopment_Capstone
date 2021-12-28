@@ -15,11 +15,40 @@
 
     <body>
     <!-- Remove this line the first time you edit this file -->
-     This is the index page of your Django app!
+
     <!--Add a nav bar here -->
+    <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="navbar-header">
+              <a class="navbar-brand" href="#">Best Cars Nationwide Dealership Locator</a>
+        </div>
+        <!--Add List to NavBar for adding a Link/Button to the About Us Page-->
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a class="btn btn-link" href="{% url 'djangoapp:about' %}">
+                    About Us
+                </a>
+                <a class="btn btn-link" href="{% url 'djangoapp:contact' %}">
+                    Contact Us
+                </a>
+            </li>
+        <ul>
+        </div>     
+    </div>
+</nav>
 
     <!--Add a dealer table here -->
 
-    </body>
+</body>
+
+    <!-- Footer for Adding Contact Us Page Link-->
+
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0.1, 0.1);">
+        © 2021 Copyright:
+        <a class="text-light-blue" href="https://github.com/Bedil09">Riki Abdillah</a>
+    </div>
+</footer>
+
+  
 
 </html>
