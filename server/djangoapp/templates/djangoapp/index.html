@@ -51,8 +51,28 @@
         </div>
     </nav>
 </nav>
-
     <!--Add a dealer table here -->
+     <!--This is the index page of your Django app!-->
+     <p> Welcome </p>
+     <!--Add a dealer table here -->
+     <table class="table" id="table">
+         <thead>
+             <tr>
+                 <th data-field="id">ID</th>
+                 <th data-field="full_name">Full_Name</th>
+                 <th data-field="city">City</th>
+                 <th data-field="state">State</th>
+                 <th data-field="address">Address</th>
+                 <th data-field="zip">Zip</th>
+             </tr>
+         </thead>
+       </table>
+     </body>
+ <script>
+     $(function() {
+         $('#table').bootstrapTable()
+     })
+ </script>
 
 </body>
 

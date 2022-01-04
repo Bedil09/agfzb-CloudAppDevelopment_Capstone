@@ -26,32 +26,31 @@ class CarMake(models.Model):
 # - Any other fields you would like to include in car model
 # - __str__ method to print a car make object
 
-
 class CarModel(models.Model):
-    SEDAN = 'Sedan'
-    SUV = 'Suv'
-    WAGON = 'Wagon'
-    MODEL_TYPE = [
-        (SEDAN, 'Sedan'),
-        (WAGON, 'Wagon'),
-        (SUV, 'Suv')
+    SEDAN='Sedan'
+    SUV='Suv'
+    WAGON='Wagon'
+    STYLE_CHOICES=[
+        (SEDAN,'Sedan'),
+        (WAGON,'Wagon'),
+        (SUV,'Suv')
     ]
-    carmake = models.ForeignKey(CarMake, null=False, on_delete=models.CASCADE)
-    dealerId = models.IntegerField()
-    modelName = models.CharField(null=False, max_length=30)
-    modelType = models.CharField(
+    
+    make=models.ForeignKey(CarMake,null=False,on_delete=models.CASCADE)
+    dealer_id=models.IntegerField()
+    model_name=models.CharField(null=False,max_length=30)
+    style=models.CharField(
         null=False,
         max_length=20,
-        choices=MODEL_TYPE,
+        choices=STYLE_CHOICES,
         default=SUV
     )
-    year = models.DateField(default=now)
+    year=models.DateField(default=now)
 
     def __str__(self):
-        return "Make: " + str(self.carmake) + "," + "\n DealerId: " + str(self.dealerId) + "," + "\n Model: " + self.modelName + "," + "\n Type: " + self.modelType + "," + "\n Year: " + str(self.year)
+        return "Make: " + str(self.make) + "," + "\n DealerId: " + str(self.dealer_id) + "," + "\n Model: " + self.model_name + "," + "\n Style: " + self.style + "," + "\n Year: " + str(self.year)
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
-
 
 class CarDealer:
 
@@ -70,7 +69,7 @@ class CarDealer:
         self.long = long
         # Dealer short name
         self.short_name = short_name
-        # Dealer st(state)
+        # Dealer state (st)
         self.st = st
         # Dealer state
         self.state = state
