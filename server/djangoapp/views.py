@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .models import CarMake,CarModel,CarDealer
+from .models import CarMake, CarModel, CarDealer
 # from .restapis import related methods
 from .restapis import get_dealers_from_cf, get_request
 from django.contrib.auth import login, logout, authenticate
@@ -21,13 +21,17 @@ logger = logging.getLogger(__name__)
 
 # Create an `about` view to render a static about page
 def about(request):
-    return render(request,'djangoapp/about.html')
+    return render(request, 'djangoapp/about.html')
 
 # Create a `contact` view to return a static contact page
+
+
 def contact(request):
     return render(request, 'djangoapp/contact_us.html')
 
 # Create a `login_request` view to handle sign in request
+
+
 def login_request(request):
     context = {}
     # Handles POST request
@@ -40,17 +44,19 @@ def login_request(request):
         if user is not None:
             # If user is valid, call login method to login current user
             login(request, user)
-            return redirect('djangoapp:index')     #home page redirect
+            return redirect('djangoapp:index')  # home page redirect
         else:
             # If not, return to login page again
             #messages.error(request,'Invalid User Name or Password')
-            #return render(request, 'djangoapp/index.html', context)
+            # return render(request, 'djangoapp/index.html', context)
             return redirect('djangoapp:index')
     else:
-        #return render(request, 'djangoapp/index.html', context)
+        # return render(request, 'djangoapp/index.html', context)
         return redirect('djangoapp:index')
 
 # Create a `logout_request` view to handle sign out request
+
+
 def logout_request(request):
     # Get the user object based on session id in request
     print("Log out the user `{}`".format(request.user.username))
@@ -93,35 +99,37 @@ def registration_request(request):
             return render(request, 'djangoapp/registration.html', context)
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
+
+
 def get_dealerships(request):
-    context={}
+    context = {}
     if request.method == "GET":
         #url = "your-cloud-function-domain/dealerships/dealer-get"
         url = "https://b97ecf11.us-south.apigw.appdomain.cloud/api/dealer"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
-        #save to list to render in template
-        dealer_list=[]
+        # save to list to render in template
+        dealer_list = []
         for dealer in dealerships:
-            dealership={}
-            dealership["id"]=dealer.id
-            dealership["full_name"]=dealer.full_name
-            dealership["city"]=dealer.city
-            dealership["state"]=dealer.state
-            dealership["zip"]=dealer.zip
-            dealership["address"]=dealer.address
+            dealership = {}
+            dealership["id"] = dealer.id
+            dealership["full_name"] = dealer.full_name
+            dealership["city"] = dealer.city
+            dealership["state"] = dealer.state
+            dealership["zip"] = dealer.zip
+            dealership["address"] = dealer.address
             print(dealership)
             dealer_list.append(dealership)
-        print("dealer_list: ",dealer_list)
-        context= {"dealer_list":dealer_list}
+        print("dealer_list: ", dealer_list)
+        context = {"dealer_list": dealer_list}
         print(context)
         # Concat all dealer's short name
         #dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        #return HttpResponse(dealer_names)
-        return render(request,'djangoapp/index.html',context)
+        # return HttpResponse(dealer_names)
+        return render(request, 'djangoapp/index.html', context)
 
- 
+
 # Create a `get_dealer_details` view to render the reviews of a dealer
 # def get_dealer_details(request, dealer_id):
 # ...
@@ -129,4 +137,3 @@ def get_dealerships(request):
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
-

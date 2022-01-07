@@ -11,10 +11,12 @@ from requests.auth import HTTPBasicAuth
 def get_request(url, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
+
     try:
-        # Call get method of requests library with URL and parameters
+
+       # Call get method of requests library with URL and parameters
         response = requests.get(url, headers={'Content-Type': 'application/json'},
-                                    params=kwargs)
+                                params=kwargs)
     except:
         # If any error occurs
         print("Network exception occurred")
@@ -43,9 +45,10 @@ def get_dealers_from_cf(url, **kwargs):
             # Get its content in `doc` object
             dealer_doc = dealer["doc"]
             # Create a CarDealer object with values in `doc` object
-            dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
-                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
-                                   short_name=dealer_doc["short_name"], st=dealer_doc["st"], state=dealer_doc["state"], zip=dealer_doc["zip"])
+            # 'address', 'city', 'full_name', 'id', 'lat', 'long', 'short_name', 'st', 'state', and 'zip'
+            dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], id=dealer_doc["id"], lat=dealer_doc["lat"],
+                                   full_name=dealer_doc["full_name"], short_name=dealer_doc["short_name"], st=dealer_doc["st"], 
+                                   state=dealer_doc["state"], long=dealer_doc["long"], zip=dealer_doc["zip"])
             results.append(dealer_obj)
 
     return results
