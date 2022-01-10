@@ -66,6 +66,18 @@
                  <th data-field="zip">Zip</th>
              </tr>
          </thead>
+         <tbody>
+            {% for dealer in dealer_list %}
+                <tr>
+                    <td>{{dealer.id}}</td>
+                    <td>{{dealer.full_name}}</a></td>
+                    <td>{{dealer.city}}</td>
+                    <td>{{dealer.state}}</td>
+                    <td>{{dealer.address}}</td>
+                    <td>{{dealer.zip}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
        </table>
      </body>
  <script>
