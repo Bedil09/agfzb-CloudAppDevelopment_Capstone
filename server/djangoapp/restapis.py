@@ -87,7 +87,7 @@ def get_dealer_reviews_id_from_cf(url,**kwargs):
     json_result=get_request(url,**parameters)
 
     if json_result:
-        reviews=json_result["id"]
+        reviews=json_result["body"]["data"]["docs"]
         for review in reviews:
             review_obj=DealerReview(
                 dealership=review["dealership"],
@@ -130,7 +130,8 @@ def get_dealer_reviews_id_from_cf(url,**kwargs):
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
-# - Get the returned sentiment label such as Positive or 
+# - Get the returned sentiment label such as Positive or
+ 
 def analyze_review_sentiments(dealer_review):
     api_url="https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/379ef73c-0fb0-4834-968b-1eaeeadaf2f6/v1/analyze"
 
@@ -145,3 +146,4 @@ def analyze_review_sentiments(dealer_review):
     json_result=get_request(api_url,**parameters)
 
     return 
+    
