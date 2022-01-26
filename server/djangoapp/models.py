@@ -11,11 +11,13 @@ from django.utils.timezone import now
 # - __str__ method to print a car make object
 
 class CarMake(models.Model):
-    name = models.CharField(max_length=30)
-    description = models.CharField(max_length=100)
+    name = models.CharField(null=False, max_length=30, default=' ')
+    description = models.CharField(
+        null=False, max_length=300, default=' ')
 
     def __str__(self):
-        return "Name :" + self.name + "," + "\n Description: " + self.description
+        return 'Name:' + self.name + ',' + \
+            'Description:' + self.description
 
 # <HINT> Create a Car Model model `class CarModel(models.Model):`:
 # - Many-To-One relationship to Car Make model (One Car Make has many Car Models, using ForeignKey field)
@@ -85,27 +87,16 @@ class CarDealer:
 
 
 class DealerReview:
-
-    # def __init__(self,car_make,car_model,car_year,dealership,id,name,purchase,purchase_date,review,sentiment):
-    def __init__(self, dealership, name, purchase, review):
-        # self.car_make=car_make
-        self.car_make = ""
-        # self.car_model=car_model
-        self.car_model = ""
-        # self.car_year=car_year
-        self.car_year = 0
-        self.dealership = dealership
-        # self.id=id
-        self.id = 0
+    def __init__(self, name, dealership, review, purchase, purchase_date, car_make, car_model, car_year, sentiment):
         self.name = name
-        self.purchase = purchase
-        # self.purchase_date=purchase_date
-        self.purchase_date = ""
+        self.dealership = dealership
         self.review = review
-        # self.sentiment=sentiment
-        self.sentiment = "default"
-        self.review_time = "N/A"
+        self.purchase = purchase
+        self.purchase_date = purchase_date
+        self.car_make = car_make
+        self.car_model = car_model
+        self.car_year = car_year
+        self.sentiment = sentiment
 
     def __str__(self):
         return "Review: " + self.review
-
