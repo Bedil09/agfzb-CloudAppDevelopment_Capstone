@@ -8,91 +8,62 @@
 </head>
 
     <body>
-        !--Add a nav bar here -->
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                      <a class="navbar-brand" href="{% url 'djangoapp:index' %}">Best Cars Nationwide Delearship Locator</a>
-                </div>
-                <!--Add List to NavBar for adding a Link/Button to the About Us Page-->
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a class="btn btn-link" href="{% url 'djangoapp:about' %}">
-                            About Us
-                        </a>
+                     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Best Cars</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/djangoapp">Home <span class="sr-only">(current)</span></a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/djangoapp/about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/djangoapp/contact">Contact Us</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
                     {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: rgb(43, 238, 238);" href="#">{{ user.username }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  style="color: rgb(43, 238, 238);" href="logout/">Logout</a>
+                    </li>
                     <li>
-                        {% if not analyzed_reviews.0.dealership %}
-                            <a class="btn btn-link" href="{% url 'djangoapp:add_review' dealership %}">
-                                Add 1st Review!
-                                ({{dealership}})
-                            </a>
-                        {% else %}
-                            <a class="btn btn-link" href="{% url 'djangoapp:add_review' analyzed_reviews.0.dealership %}">
-                                Add Review
-                                ({{analyzed_reviews.0.dealership}})
-                            </a>
-                        {% endif %}    
-                        <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
-                        <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+                        <a class="nav-link" style="color: rgb(43, 238, 238);" href="add_review/"> Add Review</a>
                     </li>
                     {% else %}
-                    <li>
-                        <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
-                            {% csrf_token %}
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Username" name="username" >
-                                <input type="password" class="form-control" placeholder="Password" name="psw" >
-                                <!--{% if message %}
-                                <div class="alert alert-warning"> 
-                                    {{ message }}
-                                </div>
-                                {% endif %}-->
-                                <button class="btn btn-primary" type="submit">Login</button>
-                                <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
-                            </div>
-                        </form>
-                    </li>
+                        <li>
+                                <a class="btn btn-link" href="/djangoapp/login/">Sign In</a>
+                                <a class="btn btn-link" href="/djangoapp/signup/">Sign Up</a>
+                        </li>
                     {% endif %}
                 </ul>
-    
             </div>
         </nav>
-        <!-- Add reviews as cards -->
-        <div class="jumbotron">
-            <h1>Dealer Reviews</h1>
-            Dealership Id: {{analyzed_reviews.0.dealership}}
-        </div>
-        <div class="container">
-        <div class="card-deck">
-            {% for analyzed_review in analyzed_reviews %}
-            <div class="card bg-light mb-3" style="min-width: 18rem;">
-                <div class="card-header">
-                    {% if analyzed_review.sentiment == 'positive' %}
-                        <img class="img-thumbnail" src="{{MEDIA_URL}}/emoji/positive.png" alt="Card image cap" width="80" heigh="80">
-                    {% elif analyzed_review.sentiment == 'neutral' %}
-                        <img class="img-thumbnail" src="{{MEDIA_URL}}/emoji/neutral.png" alt="Card image cap" width="80" heigh="80">
-                    {% elif analyzed_review.sentiment == 'negative' %}
-                        <img class="img-thumbnail" src="{{MEDIA_URL}}/emoji/negative.png" alt="Card image cap" width="80" heigh="80">
-                    {% else %}
-                    {% endif %}
-                    {{analyzed_review.sentiment}}
+
+    <!--Add a nav bar here -->
+
+    <!-- Add reviews as cards -->
+    <main class="container" style="padding: 3%;">
+        <div class="card-columns">
+            {% for review in reviews %}
+                <div class="card" style="height: 300px; overflow: scroll; overflow-x: hidden;">
+                    <img src="{{MEDIA_URL}}/emoji/{{review.sentiment}}.png" class="card-img-center" style="height: 100px; width: 100px; margin-left: 35%; margin-bottom: 5%; margin-top: 2%;">
+                    <div class="card-body" style="text-align: center;">
+                        <h5 class="card-title">{{ review.car_make }}, {{ review.car_model }}</h5>
+                        <h5 class="card-title">{{ review.car_year }}</h5>
+                        <p class="card-text">{{ review.review }}</p>
+                    </div>
                 </div>
-                    <div class="card-body">
-                        <h5 class="card-title"> {{ analyzed_review.car_make }} {{analyzed_review.car_model}} ({{analyzed_review.car_year}}) </h5>
-                        <p class="card-text"> {{ analyzed_review.review }} </p>
-                        <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
-                    </div>
-                    <div class="card-footer">
-                       Dealership Id: {{ analyzed_review.dealership }}
-                       <br>
-                       Review Time: {{ analyzed_review.review_time }}
-                    </div>
-            </div>
             {% endfor %}
         </div>
-        </div>
+    </main>
+
     </body>
 
 </html>

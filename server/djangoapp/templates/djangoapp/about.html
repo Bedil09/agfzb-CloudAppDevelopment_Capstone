@@ -2,12 +2,23 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>About Us</title>
+        <title>About</title>
         {% load static %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
-<h1>
-Welcome to Best Cars dealership, home to the best cars in North America.<br>
-We sell domestic and imported cars at reasonable prices.
-</h1>
+    <body> 
+    
+    {% include 'navbar.html' %}
+    <div class="container">
+        <p class="heading-txt" style="font-size: 2em; margin-bottom: 3%; text-align: center;">About Us</p>
+        <div style="margin-top: 5%;display: flex; justify-content: space-evenly; flex-wrap: wrap;">
+        <div class="card text-dark grey bg-light mb-3" style="max-width: 18rem;">
+            <div class="card-header">Best Car Dealership </div>
+            <div class="card-body">
+                 <p class="card-text">Welcome to Best Cars dealership, home to the best cars in North America.</br> 
+                    We sell domestic and imported cars at reasonable prices. </p>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
