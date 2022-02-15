@@ -128,10 +128,10 @@ def get_dealer_details(request, id):
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 
-def add_review(request, dealer_id):
+def add_review(request, dealerId):
     if request.method == "GET":
-        dealersid = dealer_id
-        url = "https://b97ecf11.us-south.apigw.appdomain.cloud/api/get-dealer?dealerId={0}".format(dealersid)
+        dealerId = dealerId
+        url = "https://b97ecf11.us-south.apigw.appdomain.cloud/api/dealer?dealerId={0}".format(dealerId)
         # Get dealers from the URL
         context = {
             "cars": models.CarModel.objects.all(),
@@ -143,7 +143,7 @@ def add_review(request, dealer_id):
             form = request.POST
             review = {
                 "name": "{request.user.first_name} {request.user.last_name}",
-                "dealership": dealer_id,
+                "dealership": dealerId,
                 "review": form["content"],
                 "purchase": form.get("purchasecheck"),
             }
@@ -157,7 +157,7 @@ def add_review(request, dealer_id):
             json_payload = {"review": review}
             print(json_payload)
             url = "https://b97ecf11.us-south.apigw.appdomain.cloud/api/add-reviews"
-            restapis.post_request(url, json_payload, dealerId=dealer_id)
-            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+            restapis.post_request(url, json_payload, dealerId=id)
+            return redirect("djangoapp:dealer_details", dealer_id=id)
         else:
             return redirect("/djangoapp/login")
