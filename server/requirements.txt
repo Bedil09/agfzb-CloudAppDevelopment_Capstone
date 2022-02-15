@@ -3,5 +3,5 @@ Django
 gunicorn==20.0.4
 Pillow==8.0.1
 ibm-watson
-cloudant
+ibmcloudant
 postgres
