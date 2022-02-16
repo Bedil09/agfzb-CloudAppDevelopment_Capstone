@@ -90,9 +90,9 @@ def get_dealers_from_cf(url, **kwargs):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
 
-def get_dealer_reviews_by_id_from_cf(url, id):
+def get_dealer_reviews_by_id_from_cf(url, dealerId):
     results = []
-    json_result = get_request(url, id=id)
+    json_result = get_request(url, dealerId=dealerId)
     if json_result:
         reviews = json_result["body"]["data"]["docs"]
         for review in reviews:
@@ -119,15 +119,14 @@ def get_dealer_reviews_by_id_from_cf(url, id):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or
 
-
 def analyze_review_sentiments(text):
     url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/379ef73c-0fb0-4834-968b-1eaeeadaf2f6/v1/analyze"
-    api_key = "_LaQy6Ntzh18nqT4BK9i65TRshL-M6pnaC-2yKu05W9Z"
+    api_key = "wHZmEqagFV65Nj0exPh0NZM2qSEky0Pbhk57v2lf6UAr"
 
     review=text
     authenticator = IAMAuthenticator(api_key)
     natural_language_understanding = NaturalLanguageUnderstandingV1(
-        version='2021-12-28',
+        version='2022-02-16',
         authenticator=authenticator
     )
 
@@ -136,7 +135,9 @@ def analyze_review_sentiments(text):
         text=text,
         features=Features(sentiment=SentimentOptions())
     ).get_result()
-    print(json.dumps(response))
+
+    print(json.dumps(response,indent=2))
+
     sentiment_score = str(response["sentiment"]["document"]["score"])
     sentiment_label = response["sentiment"]["document"]["label"]
     print(sentiment_score)
