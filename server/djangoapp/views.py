@@ -43,7 +43,7 @@ def login_request(request):
     if request.method == "POST":
         # Get username and password from request.POST dictionary
         username = request.POST['username']
-        password = request.POST['psw']
+        password = request.POST['password']
         # Try to check if provide credential can be authenticated
         user = authenticate(username=username, password=password)
         if user is not None:
