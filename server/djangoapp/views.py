@@ -157,7 +157,7 @@ def add_review(request, dealerId):
             json_payload = {"review": review}
             print(json_payload)
             url = "https://b97ecf11.us-south.apigw.appdomain.cloud/api/add-reviews"
-            restapis.post_request(url, json_payload, dealerId=id)
-            return redirect("djangoapp:dealer_details", dealer_id=id)
+            restapis.post_request(url, json_payload, dealerId=dealerId)
+            return redirect("djangoapp:dealer_details", dealer_id=dealerId)
         else:
             return redirect("/djangoapp/login")
