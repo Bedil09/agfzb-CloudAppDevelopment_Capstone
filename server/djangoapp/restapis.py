@@ -81,20 +81,21 @@ def get_dealer_reviews_by_id_from_cf(url, dealerId):
     if json_result:
         reviews = json_result["body"]["data"]["docs"]
         for review in reviews:
-            try:
-                review_obj = models.DealerReview(id=review["id"], name=review["name"],
-                                                 dealership=review["dealership"], review=review["review"], purchase=review["purchase"],
-                                                 purchase_date=review["purchase_date"], car_make=review['car_make'],
-                                                 car_model=review['car_model'], car_year=review['car_year'], sentiment=sentiment)
+            sentiment = analyze_review_sentiments(review["review"])
 
-                print(review_obj.sentiment)
-                results.append(review_obj)
-
-            except:
+            if  review["purchase"] is False:
                 review_obj = models.DealerReview(id=review["id"], name=review["name"],
                                                  dealership=review["dealership"], review=review["review"], purchase=review["purchase"],
                                                  purchase_date='none', car_make='none',
                                                  car_model='none', car_year='none', sentiment="none")
+                print(review_obj.sentiment)
+                results.append(review_obj)
+
+            else:
+                review_obj = models.DealerReview(id=review["id"], name=review["name"],
+                                                 dealership=review["dealership"], review=review["review"], purchase=review["purchase"],
+                                                 purchase_date=review["purchase_date"], car_make=review['car_make'],
+                                                 car_model=review['car_model'], car_year=review['car_year'], sentiment=sentiment)
 
                 print(review_obj.sentiment)
                 results.append(review_obj)
@@ -106,7 +107,7 @@ def get_dealer_reviews_by_id_from_cf(url, dealerId):
 # - Get the returned sentiment label such as Positive or
 
 
-def analyze_review_sentiments(text):
+def analyze_review_sentiments(review):
     url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/379ef73c-0fb0-4834-968b-1eaeeadaf2f6"
     api_key = "VPCeRPEkvm6DuM0t_23ImY7NZwlHga8lkCt9R5yvOYXc"
 
@@ -117,6 +118,7 @@ def analyze_review_sentiments(text):
     )
 
     natural_language_understanding.set_service_url(url)
+    
     response = natural_language_understanding.analyze(
         text=review,
         features=Features(sentiment=SentimentOptions()),

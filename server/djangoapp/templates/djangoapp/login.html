@@ -10,19 +10,15 @@
   </head>
   <body>
     <!--Add a registration form here -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Best Cars</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <nav class="navbar navbar-expand-md navbar-light  bg-dark" >
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#dealernav" aria-controls="navbarTogglerDealerNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="nav-brand nav-link" href="{% url 'djangoapp:index' %}">Best Cars Dealership</a>
+        <div class="collapse navbar-collapse" id="dealernav">
+                <a class="nav-link" href="{% url 'djangoapp:about' %}">About</a>
+                <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
+        </div>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
