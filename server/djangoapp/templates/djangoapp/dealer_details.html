@@ -19,10 +19,10 @@
     <div class="mt-4 text-center">
         <!---/djangoapp/dealer/{{dealer.id}}/add_review/-->
 
-            <h2 class="display-4">{{dealers.short_name}} Car Dealership</h2>
+            <h2 class="display-4">{{dealer.short_name}} Car Dealership</h2>
             {% if user.is_authenticated %}
             <div class="alert alert-secondary" role="alert">
-                <a href="{% url 'djangoapp:add_review' %}">Leave a review </a> for {{dealer.short_name}}. 
+                <a href="{% url 'djangoapp:add_review' dealerId %}">Leave a review </a> for {{dealer.short_name}}. 
             </div>
                 {% else %}
             <div class="alert alert-warning" role="alert">

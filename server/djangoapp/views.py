@@ -119,10 +119,11 @@ def get_dealerships(request):
 
 def get_dealer_details(request, dealerId):
     context = {}
-    if request.method == "GET":
-        url = 'https://b97ecf11.us-south.apigw.appdomain.cloud/api/reviews'
-        context = {"reviews":  restapis.get_dealer_reviews_by_id_from_cf(url, dealerId)}
-        return render(request, 'djangoapp/dealer_details.html', context)
+    url = 'https://b97ecf11.us-south.apigw.appdomain.cloud/api/reviews'
+    dealer_details = restapis.get_dealer_reviews_by_id_from_cf(url, dealerId)
+    context["dealerId"]=dealerId
+    context["reviews"]=dealer_details
+    return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
@@ -134,9 +135,10 @@ def add_review(request, dealerId):
         
         if request.method == "GET":
             dealerId = dealerId
-            url = "https://b97ecf11.us-south.apigw.appdomain.cloud/api/dealer?dealerId={0}".format(dealerId)
+            url = "https://b97ecf11.us-south.apigw.appdomain.cloud/api/dealer"
             # Get dealers from the URL
             context = {
+                "dealerId":dealerId,
                 "cars": models.CarModel.objects.all(),
                 "dealerships": restapis.get_dealers_from_cf(url),
             }
