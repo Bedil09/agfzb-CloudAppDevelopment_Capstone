@@ -16,16 +16,21 @@ from ibm_watson.natural_language_understanding_v1 import Features, SentimentOpti
 def get_request(url, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
+    json_data={}
     try:
         # Call get method of requests library with URL and parameters
-        response = requests.get(
-            url, headers={'Content-Type': 'application/json'}, params=kwargs)
+        if "apikey" in kwargs:
+            response = requests.get(url, headers={'Content-Type':'application/json'}, params=kwargs, auth=HTTPBasicAuth("apikey", kwargs["apikey"]))
+        else:
+            response = requests.get(url, headers={'Content-Type':'application/json'}, params=kwargs)
+
+        status_code = response.status_code
+        print("With status {} ".format(status_code))
+        json_data = json.loads(response.text)
+
     except:
         # If any error occurs
         print("Network exception occurred")
-    status_code = response.status_code
-    print("With status {} ".format(status_code))
-    json_data = json.loads(response.text)
     return json_data
 
 # Create a `post_request` to make HTTP POST requests
@@ -33,16 +38,16 @@ def get_request(url, **kwargs):
 
 
 def post_request(url, json_payload, **kwargs):
-    json_obj = json_payload["review"]
+    print(url)
+    print(payload)
     print(kwargs)
-
     try:
-        response = requests.post(url, json=json_obj, params=kwargs)
-    except:
-        print("something went wrong")
-
-    print(response)
-    return response
+        response = requests.post(url, params=kwargs, json=payload)
+    except Exception as e:
+        print("Error" ,e)
+    print("Status Code ", {response.status_code})
+    data = json.loads(response.text)
+    return data
 
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
@@ -108,22 +113,25 @@ def get_dealer_reviews_by_id_from_cf(url, dealerId):
 
 
 def analyze_review_sentiments(review):
-    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/379ef73c-0fb0-4834-968b-1eaeeadaf2f6"
-    api_key = "VPCeRPEkvm6DuM0t_23ImY7NZwlHga8lkCt9R5yvOYXc"
+    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/00ec2835-7f25-4e25-85de-b5c74650359d"
+    apikey = "8I6HaUw0a2bd569uR_NokM8UHyLjy9PHvN7rfuHT7dQW"
 
-    authenticator = IAMAuthenticator(api_key)
-    natural_language_understanding = NaturalLanguageUnderstandingV1(
-        version='2022-02-16',
-        authenticator=authenticator
-    )
+    authenticator = IAMAuthenticator(apikey)
+    nlu = NaturalLanguageUnderstandingV1(version='2022-03-20',authenticator=authenticator)
 
-    natural_language_understanding.set_service_url(url)
+    nlu.set_service_url(url)
     
-    response = natural_language_understanding.analyze(
+    json_result = nlu.analyze(
         text=review,
         features=Features(sentiment=SentimentOptions()),
         return_analyzed_text=True
     ).get_result()
 
-    sentiment = response['sentiment']['document']['label']
+    sentiment = json_result['sentiment']['document']['label']
     return sentiment
+
+#Call reviews db and return count of reviewsdict
+def get_reviews_count(url):
+    json_result = get_request(url)
+    print(json_result["numReviews"])
+    return json_result["numReviews"]

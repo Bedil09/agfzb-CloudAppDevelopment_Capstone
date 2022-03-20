@@ -131,17 +131,13 @@ def get_dealer_details(request, dealerId):
 def add_review(request, dealerId):
 
     if request.user.is_authenticated :
-        context={}
+        context={}       
         
         if request.method == "GET":
-            dealerId = dealerId
-            url = "https://b97ecf11.us-south.apigw.appdomain.cloud/api/dealer"
-            # Get dealers from the URL
-            context = {
-                "dealerId":dealerId,
-                "cars": models.CarModel.objects.all(),
-                "dealerships": restapis.get_dealers_from_cf(url),
-            }
+            cars = models.CarModel.objects.filter(dealerId=dealerId)
+            #cars = models.CarModel.objects.filter(dealerId=dealerId)
+            context['cars'] = cars
+            context['dealerId']=dealerId
             return render(request, 'djangoapp/add_review.html', context)
 
         elif request.method=="POST":
@@ -158,11 +154,15 @@ def add_review(request, dealerId):
                 review["purchase"] = True
             else:
                 review["purchase"] = False
+                review["purchase_date"]= request.POST["purchasedate"]
+                review["car_make"] = models.carmake.name
+                review["car_model"] = models.carmodel.name
+                review["car_year"]= models.carmodel.year.strftime("%Y")
             
             json_payload = {}
             json_payload = review
             response = post_request(url, json_payload, params=review)
-            return redirect('djangoapp:dealer_details', dealer_id=dealer_id)
+            return redirect('djangoapp:dealer_details', dealerId=dealerId)
         else:
             return HttpResponse("Invalid Request type: " + request.method)
     else:
